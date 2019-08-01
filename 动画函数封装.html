@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动画函数封装</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #box {
+            width: 200px;
+            height: 150px;
+            margin-top: 40px;
+            background-color: red;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="button" value="400px" id="btn1">
+    <input type="button" value="800px" id="btn2">
+    <div id="box">
+
+    </div>
+
+    <script>
+        var box = document.getElementById('box');
+        var btn1 = document.getElementById('btn1');
+        var btn2 = document.getElementById('btn2');
+
+
+        // var timeId;
+        // btn1.onclick = function () {
+        //     clearInterval(timeId);
+        //     timeId = setInterval(function () {
+        //         var current = box.offsetLeft;
+        //         var step = 10;
+        //         step = current < 400 ? step : -step;
+        //         current = current + step;
+        //         if (Math.abs(400 - current) <= Math.abs(step)) {
+        //             current = 400;
+        //             clearInterval(timeId);
+        //         }
+        //         box.style.left = current + 'px';
+
+        //     }, 20);
+
+
+        // }
+
+        // btn2.onclick = function () {
+        //     clearInterval(timeId);
+        //     timeId = setInterval(function () {
+        //         var current = box.offsetLeft;
+        //         var step = 10;
+        //         current = current + step;
+        //         if (800 - current <= step) {
+        //             current = 800;
+        //             clearInterval(timeId);
+        //         }
+        //         box.style.left = current + 'px';
+
+        //     }, 20);
+        // }
+
+        document.getElementById('btn1').onclick = function () {
+            animation(document.getElementById('box'), 400);
+        };
+
+        document.getElementById('btn2').onclick = function () {
+            animation(document.getElementById('box'), 800);
+        }
+
+        function animation(e, target) {
+            clearInterval(e.timeId);
+            e.timeId = setInterval(function () {
+                var current = e.offsetLeft;
+                var step = 10;
+                step = current < target ? step : -step;
+                current += step;
+                if (Math.abs(target - current) <= Math.abs(step)) {
+                    current = target;
+                    clearInterval(e.timeId);
+                }
+                e.style.left = current + 'px';
+            }, 20)
+
+        };
+
+
+
+
+    </script>
+</body>
+
+</html>
