@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>tab切换</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        #box ul li {
+            width: 98px;
+            height: 30px;
+            border: 1px solid #333;
+            float: left;
+            background-color: red;
+            list-style: none;
+            cursor: pointer;
+        }
+
+        #inner {
+            width: 400px;
+            height: 270px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        #inner span {
+            width: 400px;
+            height: 270px;
+            position: absolute;
+            bottom: 0;
+            display: none;
+        }
+
+
+        #box ul li.current {
+            background-color: blue;
+        }
+
+        #inner .current {
+            background-color: blue;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <ul>
+            <li class="current">第一</li>
+            <li>第二</li>
+            <li>第三</li>
+            <li>第四</li>
+        </ul>
+
+        <div id="inner">
+            <span class="current">第一</span>
+            <span>第二</span>
+            <span>第三</span>
+            <span>第四</span>
+        </div>
+    </div>
+
+
+    <script>
+        var box = document.getElementById('box');
+        var list = box.firstElementChild.children;
+        var spans = document.getElementById('inner').children;
+
+        for (var i = 0; i < list.length; i++) {
+            list[i].setAttribute('index', i);
+            list[i].onclick = function () {
+                for (var j = 0; j < list.length; j++) {
+                    list[j].removeAttribute('class');
+                }
+                this.className = 'current';
+                var index = this.getAttribute('index');
+                for (var k = 0; k < spans.length; k++) {
+                    spans[k].removeAttribute('class');
+                }
+                spans[index].className = 'current'
+            };
+        }
+    </script>
+</body>
+
+</html>

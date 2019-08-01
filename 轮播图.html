@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>轮播图</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #box {
+            width: 520px;
+            height: 210px;
+            border: 1px solid #666;
+            margin: 100px auto 0px;
+            position: relative;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        #inner {
+            width: 500px;
+            height: 200px;
+            margin: 5px auto 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        ul {
+            width: 3000px;
+            height: 200px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        ul li {
+            width: 500px;
+            height: 200px;
+            float: left;
+            overflow: hidden;
+        }
+
+        ol {
+            width: 110px;
+            height: 15px;
+            position: absolute;
+            right: 18px;
+            bottom: 12px;
+        }
+
+        ol li {
+            float: left;
+            width: 15px;
+            height: 15px;
+            background-color: #fff;
+            font-size: 12px;
+            line-height: 15px;
+            margin-left: 5px;
+            text-align: center;
+            border: 1px solid #fff;
+            /* background-color: red; */
+            cursor: pointer;
+        }
+
+        ol li.current {
+            background-color: red;
+        }
+
+        #arr {
+            display: none;
+        }
+
+        #arr span {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #fff;
+            position: absolute;
+            left: 9px;
+            top: 50%;
+            margin-top: -20px;
+            font-size: 40px;
+            font-family: '黑体';
+            font-weight: bold;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            /* background-color: rgba(0, 0, 0, .3); */
+            background-color: #000;
+            opacity: 0.3;
+        }
+
+        #arr #right {
+            right: 9px;
+            left: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div id="inner">
+            <ul>
+                <li><img src="images/1.jpg" alt=""></li>
+                <li><img src="images/2.jpg" alt=""></li>
+                <li><img src="images/3.jpg" alt=""></li>
+                <li><img src="images/4.jpg" alt=""></li>
+                <li><img src="images/5.jpg" alt=""></li>
+                <li><img src="images/1.jpg" alt=""></li>
+            </ul>
+            <ol>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+            </ol>
+        </div>
+
+        <div id="arr">
+            <span id="left">&lt</span>
+            <span id="right">&gt</span>
+        </div>
+    </div>
+
+    <script>
+        var box = document.getElementById('box');
+        var inner = document.getElementById('inner')
+        var ulObj = inner.children[0];
+        var olObj = inner.children[1];
+        var imgwidth = inner.offsetWidth;
+        var list = ulObj.children;
+        var listObj = olObj.children;
+        var arr = document.getElementById('arr');
+        var left = document.getElementById('left');
+        var right = document.getElementById('right');
+
+        var index = 0;
+        //鼠标进入数字下标图片跟随运动
+        for (var i = 0; i < listObj.length; i++) {
+            listObj[i].setAttribute('index', i);
+            listObj[0].className = 'current';
+            listObj[i].onmouseover = function () {
+                for (var j = 0; j < listObj.length; j++) {
+                    listObj[j].removeAttribute('class');
+                }
+                this.className = 'current';
+                index = this.getAttribute('index');
+                animation(ulObj, -index * imgwidth);
+            }
+        }
+
+        //鼠标进入、离开
+        box.onmouseover = function () {
+            arr.style.display = 'block';
+            clearInterval(timeId);
+        }
+        box.onmouseleave = function () {
+            arr.style.display = 'none';
+            timeId = setInterval(clickHandle, 2000);
+        }
+
+
+        //点击左右按钮图片运动，并和数字下标保持一致
+        right.onclick = clickHandle;
+
+        function clickHandle() {
+            index++;
+            if (index == list.length) {
+                ulObj.style.left = 0 + 'px';
+                index = 1;
+            }
+            // console.log(index);
+            animation(ulObj, -index * imgwidth);
+            for (var j = 0; j < listObj.length; j++) {
+                listObj[j].removeAttribute('class');
+            }
+            if (index < 5) {
+                listObj[index].className = 'current';
+            } else {
+                listObj[0].className = 'current';
+            }
+        }
+
+        left.onclick = function () {
+            if (index == 0) {
+                index = list.length - 1;
+                ulObj.style.left = -index * imgwidth + 'px';
+            }
+            index--;
+            // console.log(index);
+            animation(ulObj, -index * imgwidth);
+            for (var j = 0; j < listObj.length; j++) {
+                listObj[j].removeAttribute('class');
+            }
+            listObj[index].className = 'current';
+        }
+
+        //设置自动播放
+        var timeId = setInterval(clickHandle, 2000);
+
+
+
+        //封装的运动函数
+        function animation(e, target) {
+            clearInterval(e.timeId);
+            e.timeId = setInterval(function () {
+                var current = e.offsetLeft;
+                var step = 10;
+                step = current < target ? step : -step;
+                current += step;
+                if (Math.abs(target - current) <= Math.abs(step)) {
+                    current = target;
+                    clearInterval(e.timeId);
+                }
+                e.style.left = current + 'px';
+            }, 20)
+
+        };
+
+
+    </script>
+</body>
+
+</html>
