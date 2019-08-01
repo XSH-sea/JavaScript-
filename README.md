@@ -16,7 +16,7 @@ tab切换：点击导航栏中的标签，显示相对应的内容
 全选与不全选：<a href="https://xsh-sea.github.io/JavaScript-/全选与不全选.html">预览地址<a>  
   
 动画函数的封装：用定时器封装了一个匀速运动的动画函数，可以指定到达的位置  
-               <a href="https://xsh-sea.github.io/JavaScript-/动画函数的封装.html">预览地址<a>  
+               <a href="https://xsh-sea.github.io/JavaScript-/动画函数封装.html">预览地址<a>  
   
 轮播图：点击左右按钮，可以实现图片的播放，并且右下角的数字下标和图片保持一致，点击数字下标显示与下标索引一致的图片，且用定时器实现自动轮播  
        <a href="https://xsh-sea.github.io/JavaScript-/轮播图.html">预览地址<a>  
